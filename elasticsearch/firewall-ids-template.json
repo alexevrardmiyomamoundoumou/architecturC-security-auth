@@ -1,0 +1,22 @@
+{
+  "index_patterns": ["network-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "src_ip": { "type": "ip" },
+        "src_port": { "type": "integer" },
+        "dest_ip": { "type": "ip" },
+        "dest_port": { "type": "integer" },
+        "protocol": { "type": "keyword" },
+        "action": { "type": "keyword" },
+        "rule": { "type": "keyword" },
+        "severity": { "type": "keyword" }
+      }
+    }
+  }
+}

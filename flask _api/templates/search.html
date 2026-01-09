@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Recherche Logs</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100">
+
+   <div class="bg-gray-800 text-white p-4 flex justify-between">
+        <a href="/" class="font-bold">Tableau de bord de journaux</a>
+        <div>
+            <a href="/upload" class="mr-4">Upload</a>
+            <a href="/search" class="mr-4">Recherche</a>
+            <a href="/results" class="mr-4">Résultats</a>
+            <a href="/history">historique</a>
+        </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Recherche de Logs</h1>
+
+        <div class="bg-white shadow p-6 rounded mb-4">
+            <input type="text" id="searchText" placeholder="Texte à rechercher" class="border p-2 mb-2 w-full">
+            <select id="levelFilter" class="border p-2 mb-2 w-full">
+                <option value="">Tous les niveaux</option>
+                <option value="INFO">INFO</option>
+                <option value="WARN">WARN</option>
+                <option value="ERROR">ERROR</option>
+            </select>
+            <button onclick="searchLogs()" class="bg-blue-500 text-white px-4 py-2 rounded">Rechercher</button>
+            <button onclick="resetFilters()" class="bg-gray-400 text-white px-4 py-2 rounded">Reset</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <div id="footer" class="bg-gray-200 p-4 text-center mt-6">
+         © 2026 Logs Dashboard - Tous droits réservés
+    </div>
+
+    <script>
+
+    document.getElementById('searchForm').addEventListener('submit', function(e){
+         e.preventDefault();
+
+    const query = document.getElementById('searchText').value;
+    const level = document.getElementById('searchLevel').value;
+
+    // Sauvegarde la recherche dans MongoDB
+    axios.post('/api/logs/history', {
+        user: "anonymous",  // remplacer par l'ID utilisateur si auth
+        query: query,
+        level: level
+    }).then(res => {
+        console.log("Recherche sauvegardée", res.data);
+    }).catch(err => console.error("Erreur sauvegarde historique", err));
+
+});
+
+        function searchLogs() {
+            const text = document.getElementById('searchText').value;
+            const level = document.getElementById('levelFilter').value;
+
+            axios.get('/api/logs/search', { params: { text, level } })
+                 .then(res => {
+                     const container = document.getElementById('results');
+                     container.innerHTML = '<ul>' + res.data.map(l => `<li>${l.date} [${l.level}] ${l.service}: ${l.message}</li>`).join('') + '</ul>';
+                 });
+        }
+
+        function resetFilters() {
+            document.getElementById('searchText').value = '';
+            document.getElementById('levelFilter').value = '';
+            document.getElementById('results').innerHTML = '';
+        }
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "index_patterns": ["intrusion-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "attack_type": { "type": "keyword" },
+        "source_ip": { "type": "ip" },
+        "target": { "type": "keyword" },
+        "severity": { "type": "keyword" },
+        "signature": { "type": "keyword" },
+        "message": { "type": "text" }
+      }
+    }
+  }
+}

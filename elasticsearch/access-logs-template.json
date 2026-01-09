@@ -1,0 +1,20 @@
+{
+  "index_patterns": ["access-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "user": { "type": "keyword" },
+        "resource": { "type": "keyword" },
+        "resource_type": { "type": "keyword" },
+        "action": { "type": "keyword" },
+        "ip": { "type": "ip" },
+        "result": { "type": "keyword" }
+      }
+    }
+  }
+}

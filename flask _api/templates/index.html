@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Logs</title>
+
+    <!-- Tailwind CDN officiel -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <div class="bg-gray-800 text-white p-4 flex justify-between">
+        <a href="/" class="font-bold">Tableau de bord de journaux</a>
+        <div>
+            <a href="/upload" class="mr-4">Upload</a>
+            <a href="/search" class="mr-4">Recherche</a>
+            <a href="/results" class="mr-4">Résultats</a>
+            <a href="/history">historique</a>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">tableau de bord Logs</h1>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="bg-white shadow p-4 rounded">INFO: <span id="kpi-info">0</span></div>
+            <div class="bg-white shadow p-4 rounded">WARN: <span id="kpi-warn">0</span></div>
+            <div class="bg-white shadow p-4 rounded">ERROR: <span id="kpi-error">0</span></div>
+            <div class="bg-white shadow p-4 rounded">Total: <span id="kpi-total">0</span></div>
+        </div>
+
+        <!-- Logs Chart -->
+        <div class="bg-white shadow rounded p-4 mb-6">
+            <canvas id="logsChart" height="100"></canvas>
+        </div>
+
+        <!-- Last Logs Table -->
+        <div class="bg-white shadow rounded p-4">
+            <table class="min-w-full table-auto border" id="lastLogsTable">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2 border">Date</th>
+                        <th class="px-4 py-2 border">Niveau</th>
+                        <th class="px-4 py-2 border">Service</th>
+                        <th class="px-4 py-2 border">Message</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div  class="container mx-auto p-6">
+        <div class="text-center">
+            <b><h1>Dashboard Kibana</h1></b> 
+        </div>
+       
+        <iframe class="text-center" src="http://127.0.0.1:5601/app/dashboards#/view/c78a3630-ec09-11f0-a065-b525a6fb4d0e?embed=true&_g=(refreshInterval:(pause:!f,value:10000),time:(from:now-1y%2Fd,to:now))&_a=()" height="800" width="1200"></iframe>
+    </div>
+
+    <div id="footer" class="bg-gray-200 p-4 text-center mt-6">
+         © 2026 Logs Dashboard - Tous droits réservés 
+    </div>
+
+    <script>
+        // Dashboard JS
+        axios.get('/api/logs/summary')
+            .then(res => {
+                const data = res.data;
+                document.getElementById('kpi-info').innerText = data.INFO;
+                document.getElementById('kpi-warn').innerText = data.WARN;
+                document.getElementById('kpi-error').innerText = data.ERROR;
+                document.getElementById('kpi-total').innerText = data.total;
+
+                const ctx = document.getElementById('logsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: [{
+                            label: 'Logs',
+                            data: data.counts,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            tension: 0.4
+                        }]
+                    }
+                });
+            });
+
+        // Last logs table
+        axios.get('/api/logs/last')
+            .then(res => {
+                const tbody = document.querySelector('#lastLogsTable tbody');
+                res.data.forEach(log => {
+                    tbody.innerHTML += `<tr>
+                        <td class="px-4 py-2 border">${log.date}</td>
+                        <td class="px-4 py-2 border">${log.level}</td>
+                        <td class="px-4 py-2 border">${log.service}</td>
+                        <td class="px-4 py-2 border">${log.message}</td>
+                    </tr>`;
+                });
+            });
+    </script>
+</body>
+</html>

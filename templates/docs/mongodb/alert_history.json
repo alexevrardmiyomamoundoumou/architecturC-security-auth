@@ -1,0 +1,9 @@
+{
+  "_id": "ObjectId",
+  "rule_id": "ObjectId",
+  "triggered_at": "2026-01-07T21:50:00Z",
+  "severity": "Critical",
+  "status": "OPEN",
+  "message": "Seuil d’erreurs dépassé",
+  "notified_channels": ["email", "slack"]
+}

@@ -1,0 +1,14 @@
+- pipeline.id: access
+  path.config: "/usr/share/logstash/pipelines/access.conf"
+
+- pipeline.id: audit
+  path.config: "/usr/share/logstash/pipelines/audit.conf"
+
+- pipeline.id: auth
+  path.config: "/usr/share/logstash/pipelines/auth.conf"
+
+- pipeline.id: firewall
+  path.config: "/usr/share/logstash/pipelines/firewall-ids.conf"
+
+- pipeline.id: intrusion
+  path.config: "/usr/share/logstash/pipelines/intrusion.conf"

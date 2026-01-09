@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultats Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100">
+     <div class="bg-gray-800 text-white p-4 flex justify-between">
+        <a href="/" class="font-bold">Tableau de bord de journaux</a>
+        <div>
+            <a href="/upload" class="mr-4">Upload</a>
+            <a href="/search" class="mr-4">Recherche</a>
+            <a href="/results" class="mr-4">Résultats</a>
+            <a href="/history">historique</a>
+        </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Résultats Logs</h1>
+        <table id="logsTable" class="display">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Niveau</th>
+                    <th>Service</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="footer" class="bg-gray-200 p-4 text-center mt-6">
+         © 2026 Logs Dashboard - Tous droits réservés
+    </div>
+
+    <script>
+       
+        $('#logsTable').DataTable({
+    ajax: {
+        url: '/api/logs/search',
+        dataSrc: ''
+    },
+    columns: [
+        { data: 'date' },
+        { data: 'level' },
+        { data: 'service' },
+        { data: 'message' },
+        {
+            data: null,
+            render: row =>
+                `<button class="bg-blue-500 text-white px-2 py-1 rounded"
+                         onclick="alert('${row.message}')">Détails</button>`
+        }
+    ],
+    pageLength: 50
+});
+
+    </script>
+</body>
+</html>

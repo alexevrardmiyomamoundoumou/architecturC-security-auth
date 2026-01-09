@@ -1,0 +1,20 @@
+{
+  "index_patterns": ["auth-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "user": { "type": "keyword" },
+        "ip": { "type": "ip" },
+        "status": { "type": "keyword" },
+        "method": { "type": "keyword" },
+        "service": { "type": "keyword" },
+        "message": { "type": "text" }
+      }
+    }
+  }
+}

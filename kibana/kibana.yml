@@ -1,0 +1,12 @@
+server.host: "0.0.0.0"
+
+elasticsearch.hosts:
+  - "http://elasticsearch:9200"
+
+xpack.encryptedSavedObjects.encryptionKey: "812df8e40be0339509c55bf2616ce24b"
+xpack.reporting.encryptionKey: "a42da5882135dbbb7fd6943028f0c558"
+xpack.security.encryptionKey: "ae575ecf20f9b69c06c11ccc357ab398"
+
+# Désactivation des plugins problématiques sans security
+xpack.securitySolution.enabled: false
+xpack.observability.aiAssistant.enabled: false

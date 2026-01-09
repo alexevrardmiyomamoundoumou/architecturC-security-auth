@@ -1,0 +1,4 @@
+timestamp,user,source_ip,action,status,message
+2026-01-05T10:00:00Z,jdoe,192.168.10.0,login,success,France
+2026-01-05T10:05:00Z,asmith,192.168.10.0,login,failure,Brazil
+2026-01-05T10:10:00Z,jdoe,8.8.8.8,logout,success,Portugal

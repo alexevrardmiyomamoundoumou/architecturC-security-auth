@@ -1,0 +1,20 @@
+{
+  "index_patterns": ["audit-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "admin_user": { "type": "keyword" },
+        "action": { "type": "keyword" },
+        "object": { "type": "keyword" },
+        "status": { "type": "keyword" },
+        "ip": { "type": "ip" },
+        "justification": { "type": "text" }
+      }
+    }
+  }
+}

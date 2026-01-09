@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des Recherches</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <div class="bg-gray-800 text-white p-4 flex justify-between">
+        <a href="/" class="font-bold">Logs Dashboard</a>
+        <div>
+            <a href="/upload" class="mr-4">Upload</a>
+            <a href="/search" class="mr-4">Recherche</a>
+            <a href="/results" class="mr-4">Résultats</a>
+            <a href="/history">historique</a>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Historique des Recherches</h1>
+
+        <table class="min-w-full table-auto border" id="historyTable">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 border">Utilisateur</th>
+                    <th class="px-4 py-2 border">Requête</th>
+                    <th class="px-4 py-2 border">Niveau</th>
+                    <th class="px-4 py-2 border">Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="bg-gray-200 p-4 text-center mt-6">
+         © 2026 Logs Dashboard - Tous droits réservés
+    </div>
+
+    <script>
+        // Charger l'historique depuis l'API
+        axios.get('/api/logs/history')
+            .then(res => {
+                const tbody = document.querySelector('#historyTable tbody');
+                res.data.forEach(h => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="px-4 py-2 border">${h.user}</td>
+                            <td class="px-4 py-2 border">${h.query}</td>
+                            <td class="px-4 py-2 border">${h.level}</td>
+                            <td class="px-4 py-2 border">${h.searched_at}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => console.error("Erreur chargement historique :", err));
+    </script>
+
+</body>
+</html>

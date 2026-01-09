@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Logs</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100">
+    <div class="bg-gray-800 text-white p-4 flex justify-between">
+        <a href="/" class="font-bold">Tableau de bord de journaux</a>
+        <div>
+            <a href="/upload" class="mr-4">Upload</a>
+            <a href="/search" class="mr-4">Recherche</a>
+            <a href="/results" class="mr-4">Résultats</a>
+            <a href="/history">historique</a>
+        </div>
+        </div>
+    </div>
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Telechargements des fichiers de Logs</h1>
+
+        <form id="uploadForm" class="bg-white shadow p-6 rounded">
+            <input type="file" id="fileInput" multiple accept=".csv,.json,application/json,text/csv" class="mb-4">
+            <button type="button" onclick="uploadFiles()" class="bg-blue-500 text-white px-4 py-2 rounded">télechargez des fichiers csv/json</button>
+        </form>
+
+        <div class="mt-4" id="uploadedFiles"></div>
+    </div>
+
+    <div id="footer" class="bg-gray-200 p-4 text-center mt-6">
+         © 2026 Logs Dashboard - Tous droits réservés
+    </div>
+
+    <script>
+       
+       function uploadFiles() {
+    const files = document.getElementById('fileInput').files;
+    if (files.length === 0) return alert("Sélectionnez au moins un fichier");
+
+    const formData = new FormData();
+    for (let f of files) formData.append('files', f);
+
+    axios.post('/api/logs/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    .then(res => {
+        alert('Fichiers uploadés avec succès !');
+
+        // Liste cumulative des fichiers uploadés
+        const uploadedDiv = document.getElementById('uploadedFiles');
+
+        res.data.forEach(f => {
+            const p = document.createElement('p');
+            p.textContent = f;
+            uploadedDiv.appendChild(p);
+        });
+
+        // Réinitialiser l'input
+        document.getElementById('fileInput').value = '';
+    })
+    .catch(err => alert('Erreur upload : ' + err));
+}
+
+    </script>
+</body>
+</html> 

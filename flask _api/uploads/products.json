@@ -1,0 +1,16 @@
+{ "index" : { "_index" : "products", "_id" : 1 } }
+{ "products_id": 1, "name": "Ordinateur portable Lenovo ThinkPad", "description": "Un PC portable performant pour les professionnels.", "category": "Electronique", "brand": "Lenovo","price": 1200,"availability": "En stock" }
+
+{ "index" : { "_index" : "products", "_id" : 2 } }
+{ "products_id": 2, "name": "Smartphone Samsung Galaxy S22", "description": "Un smartphone haut de gamme avec excellent appareil photo.", "category": "Electronique","brand":"Samsung", "price":"950", "availability":"En stock" }
+
+
+{ "index" : { "_index" : "products", "_id" : 3 } }
+{ "products_id": 3, "name": "Casque audio Bose", "description": "Casque sans fil avec réduction active du bruit.", "category": "Accessoires","brand":"Bose", "price":"300", "availability":"Rupture" }
+
+
+
+
+
+
+
